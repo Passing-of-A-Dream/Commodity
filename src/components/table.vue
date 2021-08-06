@@ -29,14 +29,30 @@
   <!-- form表单 -->
   <el-dialog title="添加商品" v-model="dialogFormVisible">
     <el-form :model="form">
-      <el-form-item :label-width="formLabelWidth">
-        
+      <el-form-item>
+        <div class="imgUpload">
+          <n-upload style="width:450px" :action="actionUpload">
+            <n-upload-dragger>
+              <div style="margin-bottom: 12px;">
+                <n-icon size="48" :depth="3">
+                  <archive-icon />
+                </n-icon>
+              </div>
+              <n-text style="font-size: 16px;"
+                >点击或者拖动文件到该区域来上传</n-text
+              >
+              <n-p depth="3" style="margin: 8px 0 0 0;"
+                >请不要上传敏感数据，比如你的银行卡号和密码，信用卡号有效期和安全码</n-p
+              >
+            </n-upload-dragger>
+          </n-upload>
+        </div>
       </el-form-item>
-      <el-form-item label="活动区域" :label-width="formLabelWidth">
-        <el-select v-model="form.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
+      <el-form-item label="商品名称" :label-width="formLabelWidth">
+        <el-input v-model="form.name" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="商品描述(原料)" :label-width="formLabelWidth">
+        <el-input v-model="form.describe" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -59,6 +75,8 @@ import {
   watch,
   toRefs,
 } from "vue";
+
+// import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5'
 
 export default defineComponent({
   setup(props, ctx) {
@@ -133,7 +151,7 @@ export default defineComponent({
         Classification: "汤",
       },
     ];
-      // 定义proxy
+    // 定义proxy
     const porxy = getCurrentInstance();
     // @ts-ignore
     const tableIndex: object = porxy.attrs.tableIndex;
@@ -141,23 +159,15 @@ export default defineComponent({
     watch(tableIndex, (oldVal, newVal) => {
       console.log(oldVal);
       console.log(newVal);
-    });  // 获取监测表格的index值
-
-    // 定义data
-    const data = reactive({});
+    }); // 获取监测表格的index值
 
     // state form表单内容
     const state = reactive({
       dialogFormVisible: true,
       form: {
         name: "",
-        region: "",
-        date1: "",
-        date2: "",
+        describe: "",
         delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
       },
       formLabelWidth: "120px",
     });
@@ -168,6 +178,11 @@ export default defineComponent({
       srcList,
       tableIndex,
       ...toRefs(state),
+    };
+  },
+  data() {
+    return {
+      actionUpload: "",
     };
   },
 });
@@ -182,5 +197,9 @@ export default defineComponent({
   .el-button {
     margin-right: 30px;
   }
+}
+.imgUpload {
+  display: flex;
+  justify-content: center;
 }
 </style>
