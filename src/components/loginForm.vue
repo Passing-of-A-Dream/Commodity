@@ -6,9 +6,9 @@
     label-width="100px"
     class="loginForm sign-in-form"
   >
-    <el-form-item label="账号" prop="address">
+    <el-form-item label="账号" prop="userName">
       <el-input
-        v-model="loginFood.address"
+        v-model="loginFood.userName"
         placeholder="请输入账号..."
       ></el-input>
     </el-form-item>
@@ -33,6 +33,7 @@
 <script lang="ts">
 import { ref, getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
   props: {
@@ -49,22 +50,26 @@ export default {
     // @ts-ignore
     const { ctx } = getCurrentInstance();
     const router = useRouter();
-
+    const $store = useStore();
+    console.log($store);
     // 登录
     const submitBtn = (formName: string) => {
       ctx.$refs[formName].validate((valid: boolean) => {
         if (valid) {
-          console.log(props.loginFood);
+          // console.log(props.loginFood);
 
           ctx.$refs[formName].$axios
             .post("/api/admin", {
-              name: props.loginFood.address,
+              name: props.loginFood.userName,
               password: props.loginFood.password,
             })
             .then((res: any) => {
-              console.log(res.data);
+              // console.log(res.data);
               if (res.data.code === 200) {
-                router.push("/");
+                ctx.$refs[formName].$store.commit('setName', props.loginFood.userName)
+                router.push('/');
+                console.log(ctx.$refs[formName].$store.getters.getUserName);
+                
               } else {
                 ctx.$refs[formName].$message({
                   message:`登录失败, ${res.data.msg}`,

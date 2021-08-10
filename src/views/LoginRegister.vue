@@ -30,6 +30,11 @@
             <el-button type="primary" class="submit-btn">提交</el-button>
           </el-form-item>
         </el-form> -->
+        <div class="introduce registerForm">
+          <p>
+            致力于为各大高校学生提供:快递收寄、兼职招聘、二手交易、干洗、打印、美食、酒店代订及旅游推送等日常生活服务等经营活动
+          </p>
+        </div>
       </div>
     </div>
 
@@ -46,8 +51,8 @@
       </div>
       <div class="panel right-panel">
         <div class="content">
-          <h3>不想写代码</h3>
-          <p>想睡觉</p>
+          <h3>商家后台登录</h3>
+          <p>暂未上线,请耐心等待</p>
           <button @click="signUpMode = !signUpMode" class="btn transparent">
             美食商家登录
           </button>
@@ -70,7 +75,6 @@ export default {
     // @ts-ignore
     const { ctx } = getCurrentInstance();
     const signUpMode = ref<boolean>(false);
-    
 
     return {
       signUpMode,

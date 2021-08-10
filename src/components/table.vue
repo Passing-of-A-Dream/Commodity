@@ -20,9 +20,9 @@
       </template>
     </el-table-column>
     <el-table-column prop="date" label="名称" width="180"> </el-table-column>
-    <el-table-column prop="name" label="价格" width="180"> </el-table-column>
     <el-table-column prop="address" label="商品描述" width="460px">
     </el-table-column>
+    <el-table-column prop="name" label="价格" width="180"> </el-table-column>
     <el-table-column prop="Classification" label="分类"> </el-table-column>
   </el-table>
 
@@ -31,7 +31,7 @@
     <el-form :model="form">
       <el-form-item>
         <div class="imgUpload">
-          <n-upload style="width:450px" :action="actionUpload">
+          <n-upload style="width:450px" :action="form.actionUpload">
             <n-upload-dragger>
               <div style="margin-bottom: 12px;">
                 <n-icon size="48" :depth="3">
@@ -48,19 +48,37 @@
           </n-upload>
         </div>
       </el-form-item>
-      <el-form-item label="商品名称" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+      <div style="width: 50%">
+        <el-form-item label="商品名称" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off" clearable></el-input>
+        </el-form-item>
+      </div>
+      <div style="width: 80%">
+        <el-form-item label="商品描述(原料)" :label-width="formLabelWidth">
+          <el-input
+            v-model="form.describe"
+            autocomplete="off"
+            clearable
+          ></el-input>
+        </el-form-item>
+      </div>
+      <el-form-item label="价格" :label-width="formLabelWidth">
+        <div style="width: 25%;">
+          <n-input-number v-model:value="value" :min='0'>
+            <template #prefix>￥</template>
+          </n-input-number>
+        </div>
       </el-form-item>
-      <el-form-item label="商品描述(原料)" :label-width="formLabelWidth">
-        <el-input v-model="form.describe" autocomplete="off"></el-input>
-      </el-form-item>
+      <div style="width: 40%;">
+        <el-form-item label="分类" :label-width="formLabelWidth">
+          <el-input v-model="form.Classification" autocomplete="off"></el-input>
+        </el-form-item>
+      </div>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="determine">确 定</el-button>
       </span>
     </template>
   </el-dialog>
@@ -154,23 +172,48 @@ export default defineComponent({
     // 定义proxy
     const porxy = getCurrentInstance();
     // @ts-ignore
-    const tableIndex: object = porxy.attrs.tableIndex;
-    console.log(tableIndex);
+    const tableIndex:object = porxy.attrs.tableIndex;
+    // console.log(tableIndex);
     watch(tableIndex, (oldVal, newVal) => {
-      console.log(oldVal);
-      console.log(newVal);
+      // console.log(oldVal);
+      // console.log(newVal);
     }); // 获取监测表格的index值
 
+    // 定义state表单的类型
+    interface user {
+      dialogFormVisible: boolean;
+      form: {
+        name: string;
+        describe: string;
+        delivery: boolean;
+        price: string;
+        Classification: string;
+        actionUpload: string;
+      };
+      formLabelWidth: string;
+    }
     // state form表单内容
-    const state = reactive({
-      dialogFormVisible: true,
+    const state = reactive<user>({
+      dialogFormVisible: false,
       form: {
         name: "",
         describe: "",
         delivery: false,
+        price: "",
+        Classification: "",
+        actionUpload: "",
       },
       formLabelWidth: "120px",
     });
+
+    let value = ref(0);
+    // console.log(value.value);
+
+    let determine = () => {
+      state.dialogFormVisible = false;
+      // console.log(value.value);
+      // console.log(state.form.actionUpload);
+    };
 
     return {
       tableData,
@@ -178,11 +221,8 @@ export default defineComponent({
       srcList,
       tableIndex,
       ...toRefs(state),
-    };
-  },
-  data() {
-    return {
-      actionUpload: "",
+      value,
+      determine,
     };
   },
 });

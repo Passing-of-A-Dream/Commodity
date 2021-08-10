@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, reactive, ref } from "vue";
+import { defineComponent, getCurrentInstance, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import commodityTable from "@/components/table.vue";
 
@@ -89,10 +89,14 @@ export default defineComponent({
   setup(props, ctx) {
     // @ts-ignore
     const { proxy } = getCurrentInstance();
+    const route = useRouter();
+    onMounted(()=> {
+      // console.log(route);
+    })
+    
 
-    const router = useRouter();
     const getlogin = () => {
-      router.push("/login");
+      route.push("/login");
     };
     const handleOpen = (key: any, keyPath: any) => {
       // console.log(key, keyPath);
@@ -109,7 +113,7 @@ export default defineComponent({
     });
 
     proxy.$axios.post("/api/index/Show_Food").then((res: any) => {
-      console.log(res);
+      // console.log(res);
     });
 
     return {
