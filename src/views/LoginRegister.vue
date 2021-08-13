@@ -30,11 +30,11 @@
             <el-button type="primary" class="submit-btn">提交</el-button>
           </el-form-item>
         </el-form> -->
-        <div class="introduce registerForm">
+        <!-- <div class="introduce registerForm">
           <p>
             致力于为各大高校学生提供:快递收寄、兼职招聘、二手交易、干洗、打印、美食、酒店代订及旅游推送等日常生活服务等经营活动
           </p>
-        </div>
+        </div> -->
       </div>
     </div>
 

@@ -64,14 +64,49 @@
       </div>
       <el-form-item label="价格" :label-width="formLabelWidth">
         <div style="width: 25%;">
-          <n-input-number v-model:value="value" :min='0'>
+          <n-input-number v-model:value="value" :min="0">
             <template #prefix>￥</template>
           </n-input-number>
         </div>
       </el-form-item>
       <div style="width: 40%;">
         <el-form-item label="分类" :label-width="formLabelWidth">
-          <el-input v-model="form.Classification" autocomplete="off"></el-input>
+          <el-dialog
+            width="35%"
+            title="添加分类"
+            v-model="innerVisible"
+            append-to-body
+          >
+            <el-input v-model="AddOptions" placeholder="请输入内容"></el-input>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button @click="innerVisible = false">取 消</el-button>
+                <el-button type="primary" @click="change">确 定</el-button>
+              </span>
+            </template>
+          </el-dialog>
+          <div style="display:flex">
+            <div>
+              <el-select
+                v-model="classification"
+                filterable
+                default-first-option
+                placeholder="请选择分类"
+                style="width: 200px"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </div>
+            <div style="margin-left: 20px;">
+              <el-button @click="innerVisible = true">添加分类</el-button>
+            </div>
+          </div>
         </el-form-item>
       </div>
     </el-form>
@@ -172,7 +207,7 @@ export default defineComponent({
     // 定义proxy
     const porxy = getCurrentInstance();
     // @ts-ignore
-    const tableIndex:object = porxy.attrs.tableIndex;
+    const tableIndex: object = porxy.attrs.tableIndex;
     // console.log(tableIndex);
     watch(tableIndex, (oldVal, newVal) => {
       // console.log(oldVal);
@@ -196,23 +231,26 @@ export default defineComponent({
     const state = reactive<user>({
       dialogFormVisible: false,
       form: {
-        name: "",
-        describe: "",
-        delivery: false,
+        name: "",  // 商品名字
+        describe: "",  // 商品原料
+        delivery: false,  
         price: "",
-        Classification: "",
-        actionUpload: "",
+        Classification: "",  // 分类
+        actionUpload: "",  // 图片
       },
       formLabelWidth: "120px",
     });
+    
+    const data = reactive({})
+
+    let shopId = sessionStorage.getItem('shopId')
+    // console.log(shopId);
 
     let value = ref(0);
     // console.log(value.value);
 
     let determine = () => {
       state.dialogFormVisible = false;
-      // console.log(value.value);
-      // console.log(state.form.actionUpload);
     };
 
     return {
@@ -224,6 +262,36 @@ export default defineComponent({
       value,
       determine,
     };
+  },
+  data() {
+    return {
+      options: [
+        {
+          value: "分类1",
+          label: "分类1",
+        },
+        {
+          value: "CSS",
+          label: "CSS",
+        },
+        {
+          value: "JavaScript",
+          label: "JavaScript",
+        },
+      ],
+      classification: [],
+      AddOptions: "",
+      innerVisible: false,
+    };
+  },
+  methods: {
+    change() {
+      this.innerVisible = false,
+      this.options.push({ value: this.AddOptions, label: this.AddOptions });
+      console.log(this.options.length);
+      console.log(this.classification);
+      this.AddOptions = "";
+    },
   },
 });
 </script>

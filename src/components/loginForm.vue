@@ -51,7 +51,7 @@ export default {
     const { ctx } = getCurrentInstance();
     const router = useRouter();
     const $store = useStore();
-    console.log($store);
+    // console.log($store);
     // 登录
     const submitBtn = (formName: string) => {
       ctx.$refs[formName].validate((valid: boolean) => {
@@ -64,12 +64,14 @@ export default {
               password: props.loginFood.password,
             })
             .then((res: any) => {
-              // console.log(res.data);
+              // console.log(res.data.data);
               if (res.data.code === 200) {
                 ctx.$refs[formName].$store.commit('setName', props.loginFood.userName)
+                let shopId = res.data.data
+                sessionStorage.setItem('shopId', shopId)
+                // console.log(sessionStorage);
                 router.push('/');
-                console.log(ctx.$refs[formName].$store.getters.getUserName);
-                
+                // console.log(ctx.$refs[formName].$store.getters.getUserName);
               } else {
                 ctx.$refs[formName].$message({
                   message:`登录失败, ${res.data.msg}`,
