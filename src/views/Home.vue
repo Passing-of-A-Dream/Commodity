@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header
-      ><div @click="getlogin" class="management">商品管理</div></el-header
+      ><div class="management">商品管理</div></el-header
     >
     <el-container>
       <el-aside width="200px">
@@ -95,9 +95,6 @@ export default defineComponent({
     })
     
 
-    const getlogin = () => {
-      route.push("/login");
-    };
     const handleOpen = (key: any, keyPath: any) => {
       // console.log(key, keyPath);
     };
@@ -117,7 +114,6 @@ export default defineComponent({
     });
 
     return {
-      getlogin,
       handleOpen,
       handleClose,
       wtf,
@@ -137,6 +133,8 @@ export default defineComponent({
   background: rgba($color: #29b8db, $alpha: 0.5);
   text-align: center;
   line-height: 60px;
+  font-size: 25px;
+  color: rgb(41, 40, 40);
 }
 .el-footer {
   background-color: #b3c0d1;

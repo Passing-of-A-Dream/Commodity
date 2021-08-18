@@ -17,6 +17,7 @@
         v-model="loginFood.password"
         type="password"
         placeholder="请输入密码..."
+        @keyup.enter="submitBtn('loginForm')"
       ></el-input>
     </el-form-item>
     <el-form-item class="Submit-button-auto">
@@ -84,6 +85,9 @@ export default {
         }
       });
     };
+    //监听键盘事件
+    
+    
     return {
       submitBtn,
     };
